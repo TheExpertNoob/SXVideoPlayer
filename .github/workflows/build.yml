@@ -1,0 +1,29 @@
+name: Build Player
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: devkitpro/devkita64:latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build ELFs
+        run: make
+
+      - name: Generate NSOs
+        run: |
+          mkdir -p template/index/exefs template/video/exefs
+          /opt/devkitpro/tools/bin/elf2nso index.elf template/index/exefs/main
+          /opt/devkitpro/tools/bin/elf2nso video.elf template/video/exefs/main
+
+      - name: Upload template exefs
+        uses: actions/upload-artifact@v4
+        with:
+          name: template-exefs
+          path: template/
