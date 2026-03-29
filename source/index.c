@@ -7,8 +7,6 @@ int main(int argc, char *argv[]) {
     Result rc = webOfflineCreate(&config, WebDocumentKind_OfflineHtmlPage, 0, ".htdocs/index.html");
 
     if (R_SUCCEEDED(rc)) {
-        webConfigSetBootAsMediaPlayer(&config, true);
-        webConfigSetMediaPlayerAutoClose(&config, true);
         webConfigSetMediaPlayerUi(&config, true);
         webConfigShow(&config, &reply);
     }
